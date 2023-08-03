@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
 
 import Footer from '../components/Footer';
@@ -10,45 +10,46 @@ import { useChat } from 'ai/react';
 
 export default function Page() {
   const [bio, setBio] = useState('');
-    
-  const bioRef = useRef<null | HTMLDivElement>(null);
-
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state to track if the form is being submitted
+  
+  const bioRef = useRef(bio);
+  const eventRef = useRef<any>(null); // New ref to store the form submit event
+  const scrollRef = useRef<null | HTMLDivElement>(null); // New ref to handle scrolling
+  
   const scrollToBios = () => {
-    if (bioRef.current !== null) {
-      bioRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (scrollRef.current !== null) {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
+  
   const { input, handleInputChange, handleSubmit, isLoading, messages } =
-    useChat({
-      body: {
-        bio,
-      },
-      onResponse() {
-        scrollToBios();
-      },
-    });
-
+      useChat({
+        body: {
+          bio: bioRef.current,
+        },
+        onResponse() {
+          scrollToBios();
+        },
+      });
+  
+  useEffect(() => {
+    bioRef.current = bio;
+    if (isSubmitting) {
+      handleSubmit(eventRef.current); // Use the stored event
+      setIsSubmitting(false);
+      scrollToBios();
+    }
+  }, [bio, isSubmitting]);
+  
   const onSubmit = (e: any) => {
-    e.preventDefault();
-    handleSubmit({
-      ...e,
-      target: {
-        ...e.target,
-        elements: {
-          ...e.target.elements,
-          bio: {
-            value: input
-          }
-        }
-      }
-    });
+    e.preventDefault(); // Prevent the form from submitting normally
+    eventRef.current = e; // Store the event
     setBio(input);
-  };
-
+    setIsSubmitting(true);
+  };  
+  
   const lastMessage = messages[messages.length - 1];
   const generatedBios = lastMessage?.role === "assistant" ? lastMessage.content : null;
-
 
   return (
     <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
@@ -115,7 +116,7 @@ export default function Page() {
               <div>
                 <h2
                   className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto"
-                  ref={bioRef}
+                  ref={scrollRef}
                 >
                   Your generated template
                 </h2>
