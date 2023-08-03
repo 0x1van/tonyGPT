@@ -10,44 +10,41 @@ import { useChat } from 'ai/react';
 
 export default function Page() {
   const [bio, setBio] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false); // New state to track if the form is being submitted
+  const [isFormSubmitted, setFormSubmitted] = useState(false); // New state to track if the form is being submitted
   
-  const bioRef = useRef(bio);
+  const bioRef = useRef<null | HTMLDivElement>(null);
   const eventRef = useRef<any>(null); // New ref to store the form submit event
-  const scrollRef = useRef<null | HTMLDivElement>(null); // New ref to handle scrolling
   
   const scrollToBios = () => {
-    if (scrollRef.current !== null) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (bioRef.current !== null) {
+      bioRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
   
   const { input, handleInputChange, handleSubmit, isLoading, messages } =
       useChat({
         body: {
-          bio: bioRef.current,
+          bio,
         },
         onResponse() {
           scrollToBios();
         },
       });
   
-  useEffect(() => {
-    bioRef.current = bio;
-    if (isSubmitting) {
-      handleSubmit(eventRef.current); // Use the stored event
-      setIsSubmitting(false);
-      scrollToBios();
-    }
-  }, [bio, isSubmitting]);
-  
   const onSubmit = (e: any) => {
     e.preventDefault(); // Prevent the form from submitting normally
     eventRef.current = e; // Store the event
     setBio(input);
-    setIsSubmitting(true);
-  };  
+    setFormSubmitted(true); // Mark form as submitted
+  };
   
+  useEffect(() => {
+    if (isFormSubmitted) {
+      handleSubmit(eventRef.current); // Use the stored event
+      setFormSubmitted(false); // Reset form submission state
+    }
+  }, [bio, isFormSubmitted]); // Run this function whenever bio or isFormSubmitted changes  
+
   const lastMessage = messages[messages.length - 1];
   const generatedBios = lastMessage?.role === "assistant" ? lastMessage.content : null;
 
@@ -62,13 +59,6 @@ export default function Page() {
         
         <form className="max-w-xl w-full" onSubmit={onSubmit}>
           <div className="flex mt-10 items-center space-x-3">
-            <Image
-              src="/1-black.png"
-              width={30}
-              height={30}
-              alt="1 icon"
-              className="mb-5 sm:mb-0"
-            />
             <p className="text-left font-medium">
               Enter the topic you want to brag about:
             </p>
@@ -77,6 +67,7 @@ export default function Page() {
             value={input}
             onChange={handleInputChange}
             rows={4}
+            maxLength={100}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black my-5"
             placeholder={
               'e.g. investing into weed plantations.'
