@@ -29,11 +29,11 @@ export async function POST(req: Request) {
         Analyse its rhythmic and syntax structure. Come up with your own PASSAGE structured like the TEMPLATE about a different TOPIC specified below.
         
         Some rules:
-        - Start the PASSAGE with five spaces.
         - Make sure words from the TOPIC are used in the PASSAGE.
         - Make sure the first setence is always "Your ... needs to be on fire".
+        — Start the PASSAGE with five spaces.
 
-        Print only one single PASSAGE.
+        Print only the TOPIC and one single PASSAGE.
 
         TOPIC: ${bio}${
           bio.slice(-1) === '.' ? '' : '.'
