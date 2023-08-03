@@ -107,7 +107,7 @@ export default function Page() {
               <div>
                 <h2
                   className="sm:text-4xl text-3xl font-bold text-slate-900 mx-auto"
-                  ref={scrollRef}
+                  ref={bioRef}
                 >
                   Your generated template
                 </h2>
