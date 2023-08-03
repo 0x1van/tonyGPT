@@ -11,21 +11,27 @@ const openai = new OpenAIApi(config);
 export const runtime = 'edge';
 
 export async function POST(req: Request) {
-  const { vibe, bio } = await req.json();
+  const { bio } = await req.json();
 
   // Ask OpenAI for a streaming completion given the prompt
   const response = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-4',
     stream: true,
     messages: [
       {
         role: 'user',
-        content: `Generate 2 ${vibe} twitter biographies with no hashtags and clearly labeled "1." and "2.". ${
-          vibe === 'Funny'
-            ? "Make sure there is a joke in there and it's a little ridiculous."
-            : null
-        }
-          Make sure each generated biography is less than 160 characters, has short sentences that are found in Twitter bios, and base them on this context: ${bio}${
+        content: `
+        Use this as a TEMPLATE:
+        
+        "Your world needs to be on fire. Multiple remote corporate jobs. Gambling operation on the side.
+        Various women getting mad at you. Funding your brother’s business. Nicotine. Incoherent ramblings on word documents. Long walks"
+        
+        Analyse its rhythmic and syntax structure. Come up with your own PASSAGE like the TEMPLATE about a different TOPIC.
+        Make sure words from the TOPIC are used in the PASSAGE. Be creative.
+
+        Print only one single PASSAGE.
+
+        TOPIC: ${bio}${
           bio.slice(-1) === '.' ? '' : '.'
         }`,
       },
