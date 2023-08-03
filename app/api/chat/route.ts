@@ -23,17 +23,17 @@ export async function POST(req: Request) {
         content: `
         Use this as a TEMPLATE:
         
-        "Your world needs to be on fire. Multiple remote corporate jobs. Gambling operation on the side.
-        Various women getting mad at you. Funding your brother’s business. Nicotine. Incoherent ramblings on word documents. Long walks"
+        "... Your world needs to be on fire. Multiple remote corporate jobs. Gambling operation on the side.
+        Various women getting mad at you. Funding your brother’s business. Nicotine. Incoherent ramblings on word documents. Long walks ..."
         
         Analyse its rhythmic and syntax structure. Come up with your own PASSAGE structured like the TEMPLATE about a different TOPIC specified below.
         
-        Some rules:
+        Some rules for the PASSAGE:
         - Make sure words from the TOPIC are used in the PASSAGE.
-        - Make sure the first setence is always "Your ... needs to be on fire".
+        - Make sure the first setence is always "... Your X needs to be on fire", where X is TOPIC summarised.
         — Start the PASSAGE with five spaces.
 
-        Print only the TOPIC and one single PASSAGE.
+        Print only one single PASSAGE.
 
         TOPIC: ${bio}${
           bio.slice(-1) === '.' ? '' : '.'
