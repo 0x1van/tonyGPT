@@ -70,7 +70,7 @@ export default function Page() {
             maxLength={100}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black my-5"
             placeholder={
-              'e.g. investing into weed plantations.'
+              'e.g. investing into weed plantations or running a cult'
             }
           />
           
