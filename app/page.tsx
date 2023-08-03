@@ -66,7 +66,7 @@ export default function Page() {
           <textarea
             value={input}
             onChange={handleInputChange}
-            rows={4}
+            rows={1}
             maxLength={100}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black my-5"
             placeholder={
