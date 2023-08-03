@@ -23,15 +23,16 @@ export async function POST(req: Request) {
         content: `
         Use this as a TEMPLATE:
         
-        "... Your world needs to be on fire. Multiple remote corporate jobs. Gambling operation on the side.
-        Various women getting mad at you. Funding your brother’s business. Nicotine. Incoherent ramblings on word documents. Long walks ..."
+        "... Your world needs to be on fire. Multiple remote corporate jobs. Gambling operation on the side. Various women getting mad at you. Funding your brother’s business. Nicotine. Incoherent ramblings on word documents. Long walks ..."
         
-        Analyse its rhythmic and syntax structure. Come up with your own PASSAGE structured like the TEMPLATE about a different TOPIC specified below.
+        Analyse its rhythmic and syntax structure. Come up with your own PASSAGE structured similarly the TEMPLATE about a different TOPIC specified below.
         
         Some rules for the PASSAGE:
         - Make sure words from the TOPIC are used in the PASSAGE.
         - Make sure the first setence is always "... Your X needs to be on fire", where X is TOPIC summarised.
-        — Start the PASSAGE with five spaces.
+        - Start the PASSAGE with five spaces.
+        - You are allowed to change the structure if it makes it better. You don't have to repeat the words and in the TEMPLATE, you can change them as you like. it should only flow this way in terms of the sentence structure. be creative
+        - Use wordplay and puns
 
         Print only one single PASSAGE.
 
