@@ -10,7 +10,7 @@ import { useChat } from 'ai/react';
 
 export default function Page() {
   const [bio, setBio] = useState('');
-  
+    
   const bioRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBios = () => {
@@ -30,12 +30,25 @@ export default function Page() {
     });
 
   const onSubmit = (e: any) => {
+    e.preventDefault();
+    handleSubmit({
+      ...e,
+      target: {
+        ...e.target,
+        elements: {
+          ...e.target.elements,
+          bio: {
+            value: input
+          }
+        }
+      }
+    });
     setBio(input);
-    handleSubmit(e);
   };
 
   const lastMessage = messages[messages.length - 1];
   const generatedBios = lastMessage?.role === "assistant" ? lastMessage.content : null;
+
 
   return (
     <div className="flex max-w-5xl mx-auto flex-col items-center justify-center py-2 min-h-screen">
@@ -43,7 +56,7 @@ export default function Page() {
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-12 sm:mt-20">
         
         <h1 className="sm:text-6xl text-4xl max-w-[708px] font-bold text-slate-900">
-          Generate your own Tony Template™ without a hustle. 
+          Generate your own Tony Template™ better than anyone. 
         </h1>
         
         <form className="max-w-xl w-full" onSubmit={onSubmit}>
